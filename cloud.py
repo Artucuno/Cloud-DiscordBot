@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import discord
 from discord.ext.commands import Bot
 from discord.ext import commands
@@ -10,6 +11,7 @@ import datetime
 
 # Cloud a discord bot made by Cloud#6618
 # Need Support? join the Cloud Server! https://discord.gg/h3AdAFd
+
 
 def clear_screen():
     IS_WINDOWS = os.name == "nt"
@@ -27,7 +29,7 @@ c = Bot(command_prefix=config.PREFIX) # Sets the client and sets the prefix
 @c.command(pass_context=True)
 async def info(ctx):
     """"""
-    since = datetime.datetime(2017, 8, 6, 0, 0)
+    since = datetime.datetime(2017, 8, 1, 0, 0)
     days_since = (datetime.datetime.utcnow() - since).days
     em = discord.Embed(color=discord.Colour.red())
     em.add_field(name='Info', value=("\a"))
@@ -50,7 +52,42 @@ async def say(msg=""):
     except:
         pass
 
-
+@c.command(pass_context=True)
+async def stats(ctx):
+    """info about me!"""
+    import time
+    import psutil
+    t1 = time.perf_counter()
+    await c.send_typing(ctx.message.channel)
+    t2 = time.perf_counter()
+    cpu_p = psutil.cpu_percent(interval=None, percpu=True)
+    cpu_usage = sum(cpu_p) / len(cpu_p)
+    mem_usage = '{:.2f} MiB'.format(__import__('psutil').Process().memory_full_info().uss / 1024 ** 2)
+    users = str(len(set(c.get_all_members())))
+    channels = len([c for c in c.get_all_channels()])
+    text_channels = 0
+    voice_channels = 0
+    for channel in c.get_all_channels():
+        if channel.type == discord.ChannelType.text:
+            text_channels += 1
+        elif channel.type == discord.ChannelType.voice:
+            voice_channels += 1
+    cols = [0x000000, 0x60ff07, 0x1107ff, 0x07ffd7]
+    em = discord.Embed(color=random.choice(cols))
+    avatar = c.user.avatar_url if c.user.avatar else c.user.default_avatar_url
+    em.set_author(name='{} Stats!'.format("My", avatar))
+    em.add_field(name='\a', value=("\n"
+                                   "➠ Discord Ping **{}ms** :timer: \n\n"
+                                   "➠ Memory Usage **{}** :computer: \n\n"
+                                   "➠ CPU Usage    **{}%** :capital_abcd: \n\n"
+                                   "➠ Servers      **{}** :globe_with_meridians: \n\n"
+                                   "➠ Users        **{}** :man: \n\n"
+                                   "➠ Channels     **{}** :hash: \n\n"
+                                   "➠ Text Channels **{}** :hash: \n\n"
+                                   "➠ Voice Channels **{}** :speaker: \n\n"
+                                   "➠ Cogs         **{}** :exclamation: \n\n"
+                                   "➠ API Version  **{}** :japanese_ogre: \n\n".format(str(round((t2-t1)*1000)), mem_usage, cpu_usage, len(c.servers), users, channels, text_channels, voice_channels, len(c.commands), discord.__version__)))
+    await c.say(embed=em)
 def run():
     c.run(config.TOKEN) # Starts to run your bot
 
@@ -68,12 +105,14 @@ async def on_ready():
     print("----------------\n"
           "Cloud-DiscordBot\n"
           "----------------\n")
-    print("\n"
+    print("{}\n"
+          "\n"
           "Stats:\n"
           "Servers : {}\n"
           "Users   : {}\n"
-          "Channels: {}\n".format(servers, users, channels))
-    print("\n"
+          "Channels: {}\n".format(c.user.name, servers, users, channels))
+    print("Need help? Join our Support server! https://discord.gg/h3AdAFd\n"
+          "\n"
           "URL : https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=0".format(c.user.id))
     print("\n"
           "Your bot is now online!")
