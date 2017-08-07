@@ -76,6 +76,13 @@ async def contact(ctx, *, msg):
     em.add_field(name='Sent', value=("{} Help was sent please be patient! :thumbsup: ".format(author.mention)))
     em.set_footer(text="{} Will Look at your contact!".format(config.OWNER))        
     await c.say(embed=em)
+
+@c.command(pass_context=True, name="8", aliases=["8ball"])
+async def _8ball(ctx, *, msg):
+    """8ball"""
+    responces = ["Its bound to happen!", "50/50 Chance", "No it wont happen"]
+    await c.say("The 8ball says...\n"
+                ":8ball: {}".format(random.choice(responces)))
 @c.command(pass_context=True)
 async def stats(ctx):
     """Statistics"""
