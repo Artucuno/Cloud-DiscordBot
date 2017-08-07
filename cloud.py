@@ -53,6 +53,19 @@ async def say(*, msg=""):
         pass
 
 @c.command(pass_context=True)
+async def contact(ctx, *, msg):
+    """I need help!"""
+    author = ctx.message.author
+    server = ctx.message.server
+    inv = await c.create_invite(server)
+    channel = c.get_channel("{}".format(config.CONTACTID))
+    em = discord.Embed(color=discord.Colour.red())
+    em.add_field(name='Sent by', value=(author.mention))
+    em.add_field(name='Message', value=(msg))
+    em.add_field(name='Server Invite', value=(inv))
+    await c.send_message(channel, embed=em)
+    await c.say("Help was sent please be patient! :thumbsup: ")
+@c.command(pass_context=True)
 async def stats(ctx):
     """info about me!"""
     import time
