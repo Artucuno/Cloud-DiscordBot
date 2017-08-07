@@ -27,8 +27,13 @@ logger = logging.getLogger('discord')
 c = Bot(command_prefix=config.PREFIX) # Sets the client and sets the prefix
 
 @c.command(pass_context=True)
+async def roll(ctx):
+    """The Dice"""
+    nums = ["1", "2", "3", "4", "5", "6"]
+    await c.say("{}\n:game_die: {} :game_die:".format(ctx.message.author.mention, random.choice(nums))) 
+@c.command(pass_context=True)
 async def info(ctx):
-    """"""
+    """Info About me"""
     since = datetime.datetime(2017, 8, 1, 0, 0)
     days_since = (datetime.datetime.utcnow() - since).days
     em = discord.Embed(color=discord.Colour.red())
