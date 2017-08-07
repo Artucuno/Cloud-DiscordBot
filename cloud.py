@@ -78,7 +78,7 @@ async def contact(ctx, *, msg):
     await c.say(embed=em)
 @c.command(pass_context=True)
 async def stats(ctx):
-    """info about me!"""
+    """Statistics"""
     import time
     import psutil
     t1 = time.perf_counter()
@@ -99,18 +99,18 @@ async def stats(ctx):
     cols = [0x000000, 0x60ff07, 0x1107ff, 0x07ffd7]
     em = discord.Embed(color=random.choice(cols))
     avatar = c.user.avatar_url if c.user.avatar else c.user.default_avatar_url
-    em.set_author(name='{} Stats!'.format("My", avatar))
-    em.add_field(name='\a', value=("\n"
-                                   "➠ Discord Ping **{}ms** :timer: \n\n"
-                                   "➠ Memory Usage **{}** :computer: \n\n"
-                                   "➠ CPU Usage    **{}%** :capital_abcd: \n\n"
-                                   "➠ Servers      **{}** :globe_with_meridians: \n\n"
-                                   "➠ Users        **{}** :man: \n\n"
-                                   "➠ Channels     **{}** :hash: \n\n"
-                                   "➠ Text Channels **{}** :hash: \n\n"
-                                   "➠ Voice Channels **{}** :speaker: \n\n"
-                                   "➠ Cogs         **{}** :exclamation: \n\n"
-                                   "➠ API Version  **{}** :japanese_ogre: \n\n".format(str(round((t2-t1)*1000)), mem_usage, cpu_usage, len(c.servers), users, channels, text_channels, voice_channels, len(c.commands), discord.__version__)))
+    em.set_author(name='{} Statistics'.format(c.user.name))
+    em.add_field(name='Ping', value=("{}ms".format(str(round((t2-t1)*1000)))))
+    em.add_field(name='Memory usage', value=(mem_usage))
+    em.add_field(name='Cpu usage', value=(cpu_usage))
+    em.add_field(name='Servers', value=(len(c.servers)))
+    em.add_field(name='Users', value=(users))
+    em.add_field(name='Channels', value=(channels))
+    em.add_field(name='Text Channels', value=(text_channels))
+    em.add_field(name='Voice Channels', value=(voice_channels))
+    em.add_field(name='Commands', value=(len(c.commands)))
+    em.add_field(name='API Version', value=(discord.__version__))
+    em.set_thumbnail(url="https://cdn.discordapp.com/attachments/343882301928898570/344035097978208258/c1.png")
     await c.say(embed=em)
 def run():
     c.run(config.TOKEN) # Starts to run your bot
