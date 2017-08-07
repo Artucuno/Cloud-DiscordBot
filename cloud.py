@@ -8,7 +8,7 @@ import os
 import config
 import random
 import datetime
-
+import checks
 # Cloud a discord bot made by Cloud#6618
 # Need Support? join the Cloud Server! https://discord.gg/h3AdAFd
 
@@ -56,7 +56,14 @@ async def say(*, msg=""):
         await c.say(msg)
     except:
         pass
-
+@checks.is_owner()
+@c.command(pass_context=True)
+async def setgame(ctx, *, game):
+    """Sets my game (Owner)"""
+    message = ctx.message
+    await c.delete_message(message)
+    await c.whisper("Game was set to **{}**!".format(game))
+    await c.change_presence(game=discord.Game(name=game))
 @c.command(pass_context=True)
 async def contact(ctx, *, msg):
     """I need help!"""
@@ -148,7 +155,7 @@ async def on_ready():
     print("\n"
           "Your bot is now online!")
     stream_title = "{}help | {} Servers | {} Users".format(config.PREFIX, len(c.servers), len(set(c.get_all_members())))
-    streamer = "https://www.twitch.tv/Vending"
+    streamer = "https://www.twitch.tv/CloudBot"
     game = discord.Game(type=1, url=streamer, name=stream_title)
     await c.change_presence(game=game)
 
