@@ -14,6 +14,8 @@ TOKEN = 'Your Bots Token'
 PREFIX = "!"
 
 OWNER = "Articuno#6618"
+
+CONTACTID = "Channel id"
 ```
 And put all the details in!
 # Running
