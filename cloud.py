@@ -60,11 +60,17 @@ async def contact(ctx, *, msg):
     inv = await c.create_invite(server)
     channel = c.get_channel("{}".format(config.CONTACTID))
     em = discord.Embed(color=discord.Colour.red())
+    em.set_author(name="Contact by {}".format(author))
     em.add_field(name='Sent by', value=(author.mention))
+    em.add_field(name='Server', value=(server))
     em.add_field(name='Message', value=(msg))
     em.add_field(name='Server Invite', value=(inv))
+    em.set_thumbnail(url=server.icon_url)
     await c.send_message(channel, embed=em)
-    await c.say("Help was sent please be patient! :thumbsup: ")
+    em = discord.Embed(color=discord.Colour.red())
+    em.add_field(name='Sent', value=("{} Help was sent please be patient! :thumbsup: ".format(author.mention)))
+    em.set_footer(text="{} Will Look at your contact!".format(config.OWNER))        
+    await c.say(embed=em)
 @c.command(pass_context=True)
 async def stats(ctx):
     """info about me!"""
