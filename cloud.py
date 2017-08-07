@@ -40,7 +40,7 @@ async def info(ctx):
     await c.say(embed=em)
 
 @c.command()
-async def say(msg=""):
+async def say(*, msg=""):
     """hi"""
     if msg == "":
         await c.say("```\n"
