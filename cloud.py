@@ -24,7 +24,8 @@ def clear_screen():
 
 logging.basicConfig(level=logging.INFO) # Configurates the logger
 logger = logging.getLogger('discord')
-c = Bot(command_prefix=config.PREFIX) # Sets the client and sets the prefix
+description = '''Cloud-DiscordBot made by Articuno'''
+c = Bot(command_prefix=config.PREFIX, descripton=description) # Sets the client and sets the prefix
 
 @c.command(pass_context=True)
 async def roll(ctx):
@@ -34,7 +35,7 @@ async def roll(ctx):
 @c.command(pass_context=True)
 async def info(ctx):
     """Info About me"""
-    since = datetime.datetime(2017, 8, 1, 0, 0)
+    since = datetime.datetime(2017, 8, 5, 0, 0)
     days_since = (datetime.datetime.utcnow() - since).days
     em = discord.Embed(color=discord.Colour.red())
     em.add_field(name='Info', value=("\a"))
@@ -44,6 +45,30 @@ async def info(ctx):
     em.set_footer(text='Running bots Since {} days'.format(days_since))
     await c.say(embed=em)
 
+@c.command(pass_context=True)
+async def avatar(ctx):
+    """your avatar"""
+    author = ctx.message.author
+    em = discord.Embed(color=author.color)
+    em.add_field(name="{}'s Avatar".format(author), value=("{}'s Avatar".format(author.mention)))
+    em.add_field(name="\a", value=(":globe_with_meridians: Download avatar [here!]({})".format(author.avatar_url)))
+    em.set_thumbnail(url=author.avatar_url)
+    await c.say(embed=em)
+@c.command(pass_context=True)
+async def invite(ctx):
+    """Invite Me"""
+    await c.whisper("Invite :link: **https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=0**\nMake your own discord bot! **https://github.com/Articuno1234/Cloud-DiscordBot**".format(c.user.id))
+@c.command(pass_context=True)
+async def afk(ctx, *, reason):
+    """Sets you afk"""
+    message = ctx.message
+    
+    em = discord.Embed(color=discord.Colour.red())
+    em.add_field(name='AFK', value=("\n"
+                                    "{} You are now afk!\n"
+                                    "Reason :\n"
+                                    "{}".format(ctx.message.author.mention, reason)))
+    await c.say(embed=em)
 @c.command()
 async def say(*, msg=""):
     """hi"""
@@ -124,6 +149,7 @@ async def stats(ctx):
     em.add_field(name='Voice Channels', value=(voice_channels))
     em.add_field(name='Commands', value=(len(c.commands)))
     em.add_field(name='API Version', value=(discord.__version__))
+    em.set_footer(text='This Bot was made with Cloud-DiscordBot!')
     em.set_thumbnail(url="https://cdn.discordapp.com/attachments/343882301928898570/344035097978208258/c1.png")
     await c.say(embed=em)
 def run():
