@@ -140,6 +140,10 @@ async def on_ready():
           "URL : https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=0".format(c.user.id))
     print("\n"
           "Your bot is now online!")
+    stream_title = "{}help | {} Servers | {} Users".format(config.PREFIX, len(c.servers), len(set(c.get_all_members())))
+    streamer = "https://www.twitch.tv/Vending"
+    game = discord.Game(type=1, url=streamer, name=stream_title)
+    await c.change_presence(game=game)
 
 
 run = run()
